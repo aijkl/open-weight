@@ -63,7 +63,7 @@ public class Fit8sReceiver : IDisposable
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception) // MEMO 雑だけどどんな例外が出るか分からん
             {
                 // ignored
             }
