@@ -53,14 +53,16 @@ public class Fit8sReceiver : IDisposable
                 var weightData = Fit8SParser.Parse((byte[])manufacturerData.Values.First());
                 if (preWeightData != weightData)
                 {
-                    OnReceived(weightData);
-                    preWeightData = weightData;
-
-                    if (weightData.Stable && preStableWeightData != weightData)
+                    if (weightData.Stable && (preStableWeightData != weightData || preWeightData?.Stable is false))
                     {
                         OnStableReceived(weightData);
                         preStableWeightData = weightData;
                     }
+                    else
+                    {
+                        OnReceived(weightData);
+                    }
+                    preWeightData = weightData;
                 }
             }
             catch (Exception) // MEMO 雑だけどどんな例外が出るか分からん
