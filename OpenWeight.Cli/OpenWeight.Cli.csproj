@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fit8sReceiver\WeightScaleReceiver.csproj" />
+    <ProjectReference Include="..\OpenWeight.Database\OpenWeight.Database.csproj" />
   </ItemGroup>
 
 </Project>

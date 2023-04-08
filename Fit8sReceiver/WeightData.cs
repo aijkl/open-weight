@@ -1,3 +1,3 @@
 ﻿namespace WeightScaleReceiver;
 
-public record WeightData(float Weight, bool Stable);
+public record WeightData(float Weight, bool Stable, DateTime Timestamp);

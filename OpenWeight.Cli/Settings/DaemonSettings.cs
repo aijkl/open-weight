@@ -21,10 +21,14 @@ public class DaemonSettings : CommandSettings
     [CommandOption("--interval-ms")] 
     public int IntervalMs { set; get; } = 300;
 
+    [CommandOption("--connection-string")] 
+    public string ConnectionString { set; get; } = "weight.sqlite";
+
     public override ValidationResult Validate()
     {
         if (!PhysicalAddress.TryParse(DeviceAddress.AsSpan(), out _)) return ValidationResult.Error("マックアドレスのフォーマットではありません");
         if (string.IsNullOrWhiteSpace(AdapterName)) return ValidationResult.Error("アダプター名は必須です");
+        if (string.IsNullOrWhiteSpace(ConnectionString)) return ValidationResult.Error("ConnectionStringは必須です");
         return ValidationResult.Success();
     }
 }
