@@ -16,18 +16,19 @@ public class DatabaseService : IService
         dbContextOptions = optionBuilder.Options;
     }
     public string Id { get; init; } = "database";
-    public void Execute(WeightData weightData)
+    public void Execute(WeightDataEvent eventData)
     {
-        if(weightData.Stable is false) return;
+        if(eventData.Data.Stable is false) return;
 
-        using var context = new WeightContext(dbContextOptions);
-        context.Weights.Add(new WeightEntity
+        using (var context = new WeightContext(dbContextOptions))
         {
-            Timestamp = weightData.Timestamp,
-            Weight = weightData.Weight,
-        });
-        context.SaveChanges();
-
+            context.Weights.Add(new WeightEntity
+            {
+                Timestamp = eventData.Timestamp,
+                Weight = eventData.Data.Weight,
+            });
+            context.SaveChanges();
+        }
         AnsiConsoleHelper.MarkupLine($"{nameof(DatabaseService)}: Inserted");
     }
 }

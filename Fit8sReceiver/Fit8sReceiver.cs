@@ -17,8 +17,8 @@ public class Fit8sReceiver : IDisposable
         Adapter = adapter;
     }
 
-    public event Action<WeightData>? Received;
-    public event Action<WeightData>? StableReceived;
+    public event Action<WeightDataEvent>? Received;
+    public event Action<WeightDataEvent>? StableReceived;
     public Adapter Adapter { get; private set; }
     public string DeviceAddress { get; }
     public string AdapterName { get; }
@@ -55,12 +55,12 @@ public class Fit8sReceiver : IDisposable
                 {
                     if (weightData.Stable && (preStableWeightData != weightData || preWeightData?.Stable is false))
                     {
-                        OnStableReceived(weightData);
+                        OnStableReceived(new WeightDataEvent(weightData, DateTime.Now));
                         preStableWeightData = weightData;
                     }
                     else
                     {
-                        OnReceived(weightData);
+                        OnReceived(new WeightDataEvent(weightData, DateTime.Now));
                     }
                     preWeightData = weightData;
                 }
@@ -75,11 +75,12 @@ public class Fit8sReceiver : IDisposable
             }
         }
     }
-    protected virtual void OnReceived(WeightData obj)
+    protected virtual void OnReceived(WeightDataEvent obj)
     {
         Received?.Invoke(obj);
     }
-    protected virtual void OnStableReceived(WeightData obj)
+
+    protected virtual void OnStableReceived(WeightDataEvent obj)
     {
         StableReceived?.Invoke(obj);
     }

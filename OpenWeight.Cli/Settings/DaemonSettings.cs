@@ -21,8 +21,8 @@ public class DaemonSettings : CommandSettings
     [CommandOption("--interval-ms")] 
     public int IntervalMs { set; get; } = 300;
 
-    [CommandOption("--connection-string")] 
-    public string ConnectionString { set; get; } = "weight.sqlite";
+    [CommandArgument(2, "[CONNECTION_STRING]")] 
+    public string ConnectionString { set; get; }
 
     public override ValidationResult Validate()
     {
