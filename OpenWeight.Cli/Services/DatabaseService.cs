@@ -16,18 +16,18 @@ public class DatabaseService : IService
         dbContextOptions = optionBuilder.Options;
     }
     public string Id { get; init; } = "database";
-    public void Execute(WeightDataEvent eventData)
+    public async Task ExecuteAsync(WeightDataEvent eventData)
     {
-        if(eventData.Data.Stable is false) return;
+        if (eventData.Data.Stable is false) return;
 
-        using (var context = new WeightContext(dbContextOptions))
+        await using (var context = new WeightContext(dbContextOptions))
         {
             context.Weights.Add(new WeightEntity
             {
                 Timestamp = eventData.Timestamp,
                 Weight = eventData.Data.Weight,
             });
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
         AnsiConsoleHelper.MarkupLine($"{nameof(DatabaseService)}: Inserted");
     }

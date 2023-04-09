@@ -1,0 +1,11 @@
+{
+  "token": "",
+  "guildUsers": [
+    {
+      "guildId": 836823009527332884,
+      "userId": 536802665498411013,
+      "scribanPattern": "みかん@{{event_data.data.weight}}キロ"
+    }
+  ],
+  "intervalMs": 10000
+}
