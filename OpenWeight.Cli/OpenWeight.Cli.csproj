@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Discord.Net" Version="3.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Scriban" Version="5.7.0" />
     <PackageReference Include="Spectre.Console" Version="0.46.0" />
     <PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
   </ItemGroup>
@@ -18,5 +20,13 @@
     <ProjectReference Include="..\Fit8sReceiver\WeightScaleReceiver.csproj" />
     <ProjectReference Include="..\OpenWeight.Database\OpenWeight.Database.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="discordSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>
