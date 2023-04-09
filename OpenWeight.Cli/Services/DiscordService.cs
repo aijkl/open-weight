@@ -57,7 +57,7 @@ public class DiscordService : IService
                             properties.Nickname = nickName;
                         });
 
-                        AnsiConsoleHelper.MarkupLine($"{nameof(DiscordService)}: {user.DisplayName} => {nickName}", AnsiConsoleHelper.State.Success);
+                        AnsiConsoleHelper.MarkupLine($"{nameof(DiscordService)}: {nickName}", AnsiConsoleHelper.State.Success);
                     }
                     catch (Exception exception)
                     {
