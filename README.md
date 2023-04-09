@@ -6,20 +6,23 @@
 ![image](https://user-images.githubusercontent.com/51302983/230779046-4635b56a-21f4-480b-855d-6748d6186817.png)
 
 
-常時通信して体重を自動取得することができます
+## デーモンコマンド
+```AA:89:5E:18:DA:91```はFit8sのマックアドレスです、hcitoolで調べる必要があります  
+```sudo hcitool -i hci0 lescan --duplicates```でキャプチャできます、ベンダーコードは同じなので見つけやすいと思います  
+
+```hci0```はBluetoothのアダプタ名です  
+
+### Exmaple
+```dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db"```  
 
 ## --connection-string
 このオプションを有効にするとDBに体重を記録しまう
-```
-dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db"
-```
+```dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db"```
 
 ## --discord-settings-path
 このオプションを有効にすると設定ファイルに基づいてユーザーのニックネームを変更します  
-ニックネームの変更にはBOTにニックネームの変更権限が与えられている必要があります
-```
-dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db" --discord-settings-path ./discord.json
-```
+ニックネームの変更にはBOTにニックネームの変更権限が与えられている必要があります  
+```dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db" --discord-settings-path ./discord.json```
 ```
 {
   "token": "",
@@ -38,8 +41,8 @@ dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Dat
 ## 
 
 ## 通信について
-BLE (Bluetooth Low Energy)のアドバタイズパケットとして**ブロードキャスト**で体重が飛んできます
-特に認証とか暗号化とかはありません、体重なので重要ではないとの認識でブロードキャストしてる見たいです
+BLE (Bluetooth Low Energy)のアドバタイズパケットとして**ブロードキャスト**で体重が飛んできます  
+特に認証とか暗号化とかはありません、体重なので重要ではないとの認識でブロードキャストしてる見たいです  
 
-アドレスが10-12までです、リトルエンディアンで送られてくるのでビックエンディアンに変換してあげる必要があります
+アドレスが10-12までです、リトルエンディアンで送られてくるのでビックエンディアンに変換してあげる必要があります  
 ![image](https://user-images.githubusercontent.com/51302983/230730173-fdd0a5df-9a27-46e2-83fa-996afe4f77b8.png)
