@@ -30,7 +30,8 @@ dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Dat
       "scribanPattern": "みかん@{{event_data.data.weight}}キロ"
     }
   ],
-  "intervalMs": 10000
+  "intervalMs": 10000,
+  "errorIntervalMs": 300000
 }
 ```
 
