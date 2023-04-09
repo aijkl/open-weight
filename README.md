@@ -16,6 +16,7 @@ dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Dat
 
 ## --discord-settings-path
 このオプションを有効にすると設定ファイルに基づいてユーザーのニックネームを変更します
+ニックネームの変更にはBOTにニックネームの変更権限が与えられている必要があります
 ```
 {
   "token": "",
