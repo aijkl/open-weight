@@ -7,5 +7,6 @@
       "scribanPattern": "みかん@{{event_data.data.weight}}キロ"
     }
   ],
-  "intervalMs": 10000
+  "intervalMs": 10000,
+  "errorIntervalMs": 100000
 }

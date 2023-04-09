@@ -11,29 +11,27 @@ public record GuildUser(ulong GuildId, ulong UserId, string ScribanPattern);
 public record QueueItem(WeightDataEvent EventData, GuildUser GuildUser);
 public class DiscordService : IService
 {
-    private readonly string token;
+    private readonly DiscordSettings _discordSettings;
     private Task? task;
     private readonly DiscordRestClient discordRestClient;
     private readonly CancellationTokenSource tokenSource;
     private readonly SemaphoreSlim semaphore;
     public DiscordService(DiscordSettings discordSettings)
     {
-        token = discordSettings.Token;
+        _discordSettings = discordSettings;
         tokenSource = new CancellationTokenSource();
         discordRestClient = new DiscordRestClient();
         semaphore = new SemaphoreSlim(1);
         Users = discordSettings.GuildUsers;
-        IntervalMs = discordSettings.IntervalMs;
         Queue = new Queue<QueueItem>();
     }
     public IList<GuildUser> Users { get; }
-    public int IntervalMs { get; }
     public Queue<QueueItem> Queue { get; }
     public async Task StartAsync()
     {
         if (task != null) throw new InvalidOperationException("既に開始しています");
 
-        await discordRestClient.LoginAsync(TokenType.Bot, token);
+        await discordRestClient.LoginAsync(TokenType.Bot, _discordSettings.Token);
         AnsiConsoleHelper.MarkupLine($"{nameof(DiscordService)} Login", AnsiConsoleHelper.State.Success);
 
         task = Task.Run(async () =>
@@ -42,33 +40,39 @@ public class DiscordService : IService
             {
                 try
                 {
-                    await semaphore.WaitAsync();
-
-                    if(Queue.Any() is false) continue;
-
-                    var queueItem = Queue.Dequeue();
                     try
                     {
+                        await semaphore.WaitAsync();
+
+                        if (Queue.Any() is false)
+                        {
+                            await Task.Delay(100);
+                            continue;
+                        }
+
+
+                        var queueItem = Queue.Peek();
+
                         var guild = await discordRestClient.GetGuildAsync(queueItem.GuildUser.GuildId);
                         var user = await guild.GetUserAsync(queueItem.GuildUser.UserId);
                         var nickName = await Template.Parse(queueItem.GuildUser.ScribanPattern).RenderAsync(new { queueItem.EventData });
-                        await user.ModifyAsync(properties =>
-                        {
-                            properties.Nickname = nickName;
-                        });
+                        await user.ModifyAsync(properties => { properties.Nickname = nickName; });
+
+                        Queue.Dequeue();
 
                         AnsiConsoleHelper.MarkupLine($"{nameof(DiscordService)}: {nickName}", AnsiConsoleHelper.State.Success);
                     }
-                    catch (Exception exception)
+                    finally
                     {
-                        Queue.Enqueue(queueItem);
-                        AnsiConsole.WriteException(exception);
+                        semaphore.Release();
                     }
+
+                    await Task.Delay(_discordSettings.IntervalMs, tokenSource.Token);
                 }
-                finally
+                catch (Exception exception)
                 {
-                    semaphore.Release();
-                    await Task.Delay(IntervalMs, tokenSource.Token);
+                    AnsiConsole.WriteException(exception);
+                    await Task.Delay(_discordSettings.ErrorIntervalMs, tokenSource.Token);
                 }
             }
         });
