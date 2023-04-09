@@ -11,12 +11,15 @@
 ## --connection-string
 このオプションを有効にするとDBに体重を記録しまう
 ```
-dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db" --discord-settings-path ./discord.json
+dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db"
 ```
 
 ## --discord-settings-path
 このオプションを有効にすると設定ファイルに基づいてユーザーのニックネームを変更します  
 ニックネームの変更にはBOTにニックネームの変更権限が与えられている必要があります
+```
+dotnet OpenWeight.Cli.dll daemon AA:89:5E:18:DA:91 hci0 --connection-string "Data Source=weight.db" --discord-settings-path ./discord.json
+```
 ```
 {
   "token": "",
