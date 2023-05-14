@@ -37,6 +37,7 @@
   "errorIntervalMs": 300000
 }
 ```
+![image](https://github.com/aijkl/open-weight/assets/51302983/9466b93d-e715-4551-9640-48e2ef88c4cc)
 
 ## 
 
