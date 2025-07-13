@@ -46,7 +46,7 @@ public class Fit8sReceiver : IDisposable
         {
             try
             {
-                var device = await Adapter.GetDeviceAsync(DeviceAddress);
+                using var device = await Adapter.GetDeviceAsync(DeviceAddress);
                 var manufacturerData = await device.GetManufacturerDataAsync();
                 if (manufacturerData == null) continue;
 
