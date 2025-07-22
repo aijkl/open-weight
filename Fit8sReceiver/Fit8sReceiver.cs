@@ -36,9 +36,11 @@ public class Fit8sReceiver : IDisposable
     {
         await Adapter.SetDiscoveryFilterAsync(new Dictionary<string, object>
         {
-            { "Transport", "le" }
+            { "Transport", "le" },
+            { "UUIDs", new[] { "0000ffd0-0000-1000-8000-00805f9b34fb" } },
         });
         await Adapter.StartDiscoveryAsync();
+        using var device = await Adapter.GetDeviceAsync(DeviceAddress);
 
         WeightData? preWeightData = null;
         WeightData? preStableWeightData = null;
@@ -46,7 +48,6 @@ public class Fit8sReceiver : IDisposable
         {
             try
             {
-                using var device = await Adapter.GetDeviceAsync(DeviceAddress);
                 var manufacturerData = await device.GetManufacturerDataAsync();
                 if (manufacturerData == null) continue;
 
