@@ -40,14 +40,15 @@ public class Fit8sReceiver : IDisposable
             { "UUIDs", new[] { "ffd0" } }
         });
         await Adapter.StartDiscoveryAsync();
-        using var device = await Adapter.GetDeviceAsync(DeviceAddress);
 
         WeightData? preWeightData = null;
         WeightData? preStableWeightData = null;
+        Device? device = null;
         while (tokenSource.IsCancellationRequested is false)
         {
             try
             {
+                device ??= await Adapter.GetDeviceAsync(DeviceAddress);
                 var manufacturerData = await device.GetManufacturerDataAsync();
                 if (manufacturerData == null) continue;
 
