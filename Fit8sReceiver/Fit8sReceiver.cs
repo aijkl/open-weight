@@ -65,9 +65,9 @@ public class Fit8sReceiver : IDisposable
                     preWeightData = weightData;
                 }
             }
-            catch (Exception) // MEMO 雑だけどどんな例外が出るか分からん
+            catch (Exception ex) // MEMO 雑だけどどんな例外が出るか分からん
             {
-                // ignored
+                Console.WriteLine(ex);
             }
             finally
             {
